@@ -1,11 +1,34 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "customer-price-list",
+    "title": "Your price list",
+    "for_each": "select id,name from customers order by name",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      { "title": "Your prices today", "note": "Prices exclude GST unless stated. Your agreed special prices are shown where they apply.", "sql": "select sku,product,currency,entitled_cents as price_cents,basis from entitled_prices where customer_id=$1 order by sku" },
+      { "title": "Quantity breaks", "sql": "select sku,name,min_qty,currency,price_cents from list_margins where price_list_id=(select price_list_id from customers where id=$1) and min_qty>1 order by sku,min_qty" },
+      { "title": "Special prices and end dates", "sql": "select sku,product,currency,price_cents,valid_to from special_work where customer_id=$1 and status='approved' and valid_to>=current_date order by valid_to" }
+    ]
+  },
+  {
+    "name": "recommended-retail-list",
+    "title": "Recommended retail prices",
+    "for_each": "select id,name from price_lists where recommended_retail order by code",
+    "file": "name",
+    "sections": [
+      { "title": "Recommended prices", "sql": "select sku,name,currency,price_cents,case when gst_inclusive then 'including GST' else 'GST status not set' end as gst from list_margins where price_list_id=$1 and min_qty=1 order by sku" },
+      { "title": "Reseller statement", "sql": "select coalesce(resale_statement,'Missing: add a statement that resellers set their own prices before issuing this list') as statement from price_lists where id=$1" }
+    ]
+  },
+  {
+    "name": "price-change-brief",
+    "title": "Price change brief",
+    "for_each": "select id,name from price_changes where status in ('draft','approved') order by effective_on",
+    "file": "name",
+    "sections": [
+      { "title": "The change", "sql": "select name,status,effective_on,uplift_bps,array_to_string(lists,', ') as lists,array_to_string(groups,', ') as groups,created_by,approved_by from price_changes where id=$1" },
+      { "title": "Lines and new margins", "sql": "select list,sku,min_qty,currency,old_cents,new_cents,cost_cents,new_margin_bps,qty_12m from change_lines where change_id=$1 order by list,sku,min_qty" },
+      { "title": "Customer notices", "sql": "select customer,rep,notice_days,notify_by,notified_on,notice_state from notice_work where change_id=$1 order by notify_by" }
     ]
   }
 ]

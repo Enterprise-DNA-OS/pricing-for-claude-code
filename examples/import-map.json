@@ -1,0 +1,6 @@
+{
+  "_": "Map your export's column headings to the fields the importer reads. Leave out any field whose heading already matches.",
+  "sku": "sku",
+  "price": "resultPrice",
+  "qty": "key2"
+}

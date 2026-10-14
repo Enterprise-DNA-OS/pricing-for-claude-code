@@ -1,0 +1,42 @@
+[
+  [
+    "Which prices fell under the margin floor after the last supplier cost rise?",
+    "below-floor"
+  ],
+  [
+    "Which cost rises have not been passed through to any price list yet?",
+    "cost-moves"
+  ],
+  [
+    "How much did each rep invoice below the entitled price last quarter?",
+    "leakage-by-rep"
+  ],
+  [
+    "Which customers are still invoiced at a special price that has already ended?",
+    "leakage"
+  ],
+  [
+    "What is a 4.5% rise on oils worth over twelve months, before it goes out?",
+    "change"
+  ],
+  [
+    "Which customers cannot be given the notice period in their terms before the next rise?",
+    "notices-due"
+  ],
+  [
+    "Which special prices end in the next six weeks, and what does each customer go back to?",
+    "specials-expiring"
+  ],
+  [
+    "What does this customer pay for 12 drums today, and does it clear the floor?",
+    "price"
+  ],
+  [
+    "Which discount requests would leave less than the floor, and who asked?",
+    "requests"
+  ],
+  [
+    "Which recommended retail lists are missing GST-inclusive pricing or the reseller statement?",
+    "compliance"
+  ]
+]

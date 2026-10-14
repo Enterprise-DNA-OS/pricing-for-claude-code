@@ -1,14 +1,29 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Pricing for Claude Code: what needs attention, rendered by npm run view",
+    "title": "This week in the price book",
+    "subtitle": "Cost moves, margins under the floor, specials ending and notices to send",
     "sections": [
-      {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
-      }
+      { "title": "Needs attention", "sql": "select what,item,detail from (select 1 as o,'cost moved, price not reviewed' as what,sku as item,currency||' cost '||round(previous_cost_cents/100.0,2)||' to '||round(cost_cents/100.0,2) as detail from cost_moves where price_set_on is null or price_set_on<cost_from union all select 2,'special expiring',customer||' '||sku,'ends '||valid_to from special_work where status='approved' and days_left between 0 and (select value from policy where key='special_expiry_warning_days') union all select 3,'notice to send',customer,notice_state||', notify by '||notify_by from notice_work where notice_state<>'notified') a order by o,item" },
+      { "title": "Below the margin floor", "note": "Margin is price less today's cost, as a share of price, in the list's own currency.", "sql": "select list,sku,min_qty,currency,price_cents,cost_cents,margin_bps,floor_bps from list_margins where margin_bps<floor_bps order by margin_bps" },
+      { "title": "Price change notices", "sql": "select change,effective_on,customer,rep,notice_days,notify_by,notified_on,notice_state from notice_work order by notify_by,customer" }
+    ]
+  },
+  {
+    "name": "leakage",
+    "title": "Price leakage",
+    "subtitle": "Invoiced below the price each customer is entitled to, over the policy window",
+    "sections": [
+      { "title": "By rep", "sql": "select rep,currency,count(*)::int as lines,sum(leakage_cents)::bigint as leakage_cents from leakage where leakage_cents>0 group by rep,currency order by 4 desc" },
+      { "title": "By customer and product", "sql": "select customer,sku,currency,basis,qty,entitled_cents,realised_cents,leakage_cents from leakage where leakage_cents>0 order by leakage_cents desc" }
+    ]
+  },
+  {
+    "name": "price-book",
+    "title": "Price book and margins",
+    "sections": [
+      { "title": "Every live price", "sql": "select list,sku,name,min_qty,currency,price_cents,cost_cents,margin_bps,floor_bps,target_bps from list_margins order by list,sku,min_qty" },
+      { "title": "Customer specials", "sql": "select customer,sku,currency,price_cents,list_price_cents,margin_bps,valid_to,status,approved_by from special_work order by valid_to" }
     ]
   }
 ]

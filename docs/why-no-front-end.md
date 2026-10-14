@@ -1,24 +1,9 @@
-# Why there is no front end
+# The price book without a front end
 
-Pricefx is a database with a subscription. The tables underneath it are ordinary: a few entities, a few relationships, a handful of workflows you repeat every week. What you pay for is the layer on top that lets people who do not write SQL get at those tables. Screens, filters, dashboards, forms.
+A pricing manager's week is a handful of questions: which costs moved, which prices fell under the floor, which specials end soon, who needs notice of the next rise, and where reps are giving margin away. Each of those is one query against a database. Claude Code runs it when you ask in plain words.
 
-That layer used to be the whole product, because talking to a database was hard. It is not hard any more. Open this folder in Claude Code, describe what you want, and it writes the query, runs it, and explains the answer. Ask a question the dashboard never had a chart for and you still get an answer.
+What a screen gives that this does not: a grid to edit hundreds of prices by hand, a phone app for reps checking a price on site, charts that update as you click, and approval buttons in an inbox. The free version has none of those. It has commands, read-only HTML views you can print or share (`npm run view`), and branded documents (`npm run docs`). Edits happen through commands that check margins and record who did what.
 
-## What you gain
+Pricefx also models price elasticity and optimises prices; this does not. Most distributors set prices from cost, target margin and judgement, and that is what this supports.
 
-- **Better answers.** A dashboard shows what the vendor decided to chart. Here you ask your own question, in your own words, and get it answered against your own data.
-- **No seats.** Everyone who needs to look can look. The bill does not grow with headcount.
-- **Your data in your Postgres.** Plain tables. Back them up, query them from anything, leave any time. There is no export step because there is nothing to leave.
-- **A process that matches you.** When your way of working changes, you add a command. You do not wait for a feature request to clear.
-
-## What you give up
-
-- **A visual board.** Stages are a table you ask about, not cards you drag.
-- **A phone app.** It runs where Claude Code runs.
-- **A vendor help desk.** This is open source. Enterprise DNA supports the installed version for businesses that want someone to call.
-
-## Who this fits
-
-Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your team needs a screen to look at all day, keep Pricefx. If you need the answers more than the screens, this is cheaper, faster and yours.
-
-Installed and run for you: https://enterprisedna.co/omni/instead-of/pricefx
+If your team needs screens, a rep app or a live link to your ERP, Enterprise DNA builds them into your version. The database stays yours either way.
